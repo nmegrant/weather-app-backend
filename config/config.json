@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "secret",
+    "database": "weather_database",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "secret",
+    "database": "weather_database",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}

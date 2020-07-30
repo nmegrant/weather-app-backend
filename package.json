@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.3.0",
+    "sequelize": "^6.3.3",
+    "sequelize-cli": "^6.2.0"
+  }
 }
