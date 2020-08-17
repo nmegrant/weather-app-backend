@@ -35,7 +35,12 @@ router.post("/signup", async (request, response, next) => {
       .send("An account with that email already exists");
   }
   try {
-    const newUser = await User.create({ email, password, name, location });
+    const newUser = await User.create({
+      email,
+      password: bcrypt.hashSync(password, 10),
+      name,
+      location,
+    });
     delete newUser.dataValues["password"];
     response.status(201).send({ ...newUser.dataValues });
   } catch (error) {
