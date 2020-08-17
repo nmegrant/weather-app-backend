@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
 const User = require("../models").user;
 
@@ -17,7 +18,8 @@ router.post("/login", async (request, response, next) => {
         .send("No user with the email/password is incorrect");
     }
     delete user.dataValues["password"];
-    return response.status(200).send({ ...user.dataValues });
+    const token = toJWT({ userId: user.id });
+    return response.status(200).send({ ...user.dataValues, token });
   } catch (error) {
     console.log(`The login error is: ${error}`);
   }
@@ -42,7 +44,8 @@ router.post("/signup", async (request, response, next) => {
       location,
     });
     delete newUser.dataValues["password"];
-    response.status(201).send({ ...newUser.dataValues });
+    const token = toJWT({ userId: newUser.id });
+    response.status(201).send({ ...newUser.dataValues, token });
   } catch (error) {
     console.log(`Sign up error: ${error}`);
   }

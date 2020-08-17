@@ -1,4 +1,4 @@
-require("dotenv").config;
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const secret = process.env.JWT_SECRET;
@@ -11,4 +11,4 @@ function toData(token) {
   return jwt.verify(token, secret);
 }
 
-module.export = { toJWT, toData };
+module.exports = { toJWT, toData };
