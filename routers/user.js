@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const bcrypt = require("bcrypt");
 const User = require("../models").user;
 
 const router = new Router();
@@ -10,7 +11,7 @@ router.post("/login", async (request, response, next) => {
       return response.status(400).send("Please supply email and password");
     }
     const user = await User.findOne({ where: { email } });
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
       return response
         .status(400)
         .send("No user with the email/password is incorrect");
