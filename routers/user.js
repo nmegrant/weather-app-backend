@@ -52,9 +52,21 @@ router.post("/signup", async (request, response, next) => {
   }
 });
 
-router.get("/user", authMiddleware, (request, response) => {
+router.get("/user", authMiddleware, async (request, response) => {
   delete request.user.dataValues["password"];
-  response.status(200).send({ ...request.user.dataValues });
+  try {
+    const user = await User.findOne({
+      where: { id: request.user.id },
+    });
+    if (!user) {
+      return response.status(404).send("User not found");
+    }
+    response
+      .status(200)
+      .send({ ...user.dataValues, ...request.user.dataValues });
+  } catch (error) {
+    console.log(`Fetching user info: ${error}`);
+  }
 });
 
 module.exports = router;
