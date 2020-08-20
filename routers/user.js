@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
+const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
 
 const router = new Router();
@@ -49,6 +50,11 @@ router.post("/signup", async (request, response, next) => {
   } catch (error) {
     console.log(`Sign up error: ${error}`);
   }
+});
+
+router.get("/user", authMiddleware, (request, response) => {
+  delete request.user.dataValues["password"];
+  response.status(200).send({ ...request.user.dataValues });
 });
 
 module.exports = router;

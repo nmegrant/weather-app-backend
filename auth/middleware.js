@@ -21,3 +21,5 @@ async function auth(request, response, next) {
     return response.status(401).send("Please supply valid credentials");
   }
 }
+
+module.exports = auth;
