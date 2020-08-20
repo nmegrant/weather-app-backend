@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
+const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
 
 const router = new Router();
@@ -48,6 +49,23 @@ router.post("/signup", async (request, response, next) => {
     response.status(201).send({ ...newUser.dataValues, token });
   } catch (error) {
     console.log(`Sign up error: ${error}`);
+  }
+});
+
+router.get("/user", authMiddleware, async (request, response) => {
+  delete request.user.dataValues["password"];
+  try {
+    const user = await User.findOne({
+      where: { id: request.user.id },
+    });
+    if (!user) {
+      return response.status(404).send("User not found");
+    }
+    response
+      .status(200)
+      .send({ ...user.dataValues, ...request.user.dataValues });
+  } catch (error) {
+    console.log(`Fetching user info: ${error}`);
   }
 });
 
