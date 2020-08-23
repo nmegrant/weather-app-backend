@@ -6,9 +6,11 @@ const Favourites = require("../models").favourite;
 
 const router = new Router();
 
-router.get("/favourites", async (request, response) => {
+router.get("/favourites", authMiddleware, async (request, response) => {
   try {
-    const favs = await Favourites.findAll({ where: { userId: 1 } });
+    const favs = await Favourites.findAll({
+      where: { userId: request.user.id },
+    });
     if (!favs) {
       return response.status(404).send("No favourites found");
     }
