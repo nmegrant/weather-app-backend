@@ -20,4 +20,20 @@ router.get("/favourites", authMiddleware, async (request, response) => {
   }
 });
 
+router.post("/favourites", authMiddleware, async (request, response) => {
+  const { location } = request.body;
+  if (!location) {
+    return response.status(400).send("No location specified");
+  }
+  try {
+    const newFavouriteList = await Favourites.create({
+      userId: request.user.id,
+      location: location,
+    });
+    return response.status(201).send(newFavouriteList);
+  } catch (error) {
+    console.log(`Error adding a new favourite: ${error}`);
+  }
+});
+
 module.exports = router;
