@@ -36,4 +36,23 @@ router.post("/favourites", authMiddleware, async (request, response) => {
   }
 });
 
+router.delete("/favourites", authMiddleware, async (request, response) => {
+  const { id } = request.body;
+  try {
+    const favourite = await Favourites.findOne({
+      where: {
+        id: id,
+        userId: request.user.id,
+      },
+    });
+    await favourite.destroy();
+    const newFavouriteList = await Favourites.findAll({
+      where: { userId: request.user.id },
+    });
+    return response.status(201).send(newFavouriteList);
+  } catch (error) {
+    console.log(`Error removing a favourite: ${error}`);
+  }
+});
+
 module.exports = router;
