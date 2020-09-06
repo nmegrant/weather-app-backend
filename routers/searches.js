@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const Searches = require("../models").searchresults;
+const Searches = require("../models").searchResults;
 
 const router = new Router();
 
@@ -9,7 +9,7 @@ router.post("/searches", async (request, response, next) => {
     return response.status(400).send("No location to add");
   }
   try {
-    const search = await Searches.findOrCreate({
+    const searchHistory = await Searches.findOrCreate({
       where: { location: location },
       defaults: { location: location, numSearches: 0 },
     });
