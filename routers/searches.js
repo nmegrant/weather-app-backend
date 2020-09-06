@@ -4,7 +4,8 @@ const Searches = require("../models").searchResults;
 const router = new Router();
 
 router.post("/searches", async (request, response, next) => {
-  const { location } = request.body;
+  let { location } = request.body;
+  location = location.toLowerCase();
   if (!location) {
     return response.status(400).send("No location to add");
   }
