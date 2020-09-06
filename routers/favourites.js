@@ -1,4 +1,4 @@
-const Router = require("express");
+const { Router } = require("express");
 const { toJWT, toData } = require("../auth/jwt");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
