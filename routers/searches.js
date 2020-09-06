@@ -9,10 +9,11 @@ router.post("/searches", async (request, response, next) => {
     return response.status(400).send("No location to add");
   }
   try {
-    const searchHistory = await Searches.findOrCreate({
+    await Searches.findOrCreate({
       where: { location: location },
       defaults: { location: location, numSearches: 0 },
     });
+    await Searches.increment({ numSearches: 1 }, { where: { location } });
   } catch (error) {
     console.log(`Error adding to search history: ${error}`);
   }
