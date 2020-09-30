@@ -20,4 +20,13 @@ router.post("/searches", async (request, response, next) => {
   }
 });
 
+router.get("/searches", async (request, response, next) => {
+  try {
+    const searches = await Searches.findAll();
+    return response.status(200).send(searches);
+  } catch (error) {
+    console.log(`Error getting search history: ${error}`);
+  }
+});
+
 module.exports = router;
