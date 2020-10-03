@@ -20,10 +20,18 @@ router.post("/searches", async (request, response, next) => {
   }
 });
 
+function sort_searches(a, b) {
+  return b.numSearches - a.numSearches;
+}
+
 router.get("/searches", async (request, response, next) => {
   try {
     const searches = await Searches.findAll();
-    return response.status(200).send(searches);
+    sorted_searches = [...searches].sort(sort_searches).slice(0, 10);
+    final_searches = [...searches].filter((search) =>
+      sorted_searches.includes(search)
+    );
+    return response.status(200).send(final_searches);
   } catch (error) {
     console.log(`Error getting search history: ${error}`);
   }
